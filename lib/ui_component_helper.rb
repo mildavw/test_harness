@@ -97,7 +97,11 @@ class TestHarness
 
     private
     def component_path
-      component.path.gsub(/:\w+/) {|match| mm.subject.send(match.tr(':',''))}
+      case path = component.path
+      when Proc then path.call(mm)
+      else
+        path.gsub(/:\w+/) {|match| mm.subject.send(match.tr(':',''))}
+      end
     end
 
     # @private
