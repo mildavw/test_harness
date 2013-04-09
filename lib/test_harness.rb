@@ -62,6 +62,7 @@ end
 
 require 'given'
 require 'ui_helper'
+require 'form_struct'
 
 require 'ui_component'
 require 'ui_component_helper'

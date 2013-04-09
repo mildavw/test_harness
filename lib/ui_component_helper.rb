@@ -69,11 +69,6 @@ class TestHarness
     #   submit!
     #
     def submit!
-      form_hash.each do |k,v|
-        field = find_field(k.to_s)
-        field[:type] =~ /^select/ ? field.select(v) : field.set(v)
-      end
-
       if has_css?(locator = component.submit)
         find(:css, component.submit).click
       else
@@ -87,12 +82,12 @@ class TestHarness
     #   form.password = 'password'
     #   submit!
     def form
-      @form ||= OpenStruct.new
+      @form ||= TestHarness::FormStruct.new(browser)
     end
 
     private
     def form_hash
-      form.instance_variable_get("@table")
+      form.instance_variable_get("@table") || {}
     end
 
     private
