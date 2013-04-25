@@ -45,7 +45,18 @@ class TestHarness
       until page.evaluate_script('jQuery.isReady&&jQuery.active==0') or (start_time + ajax_timeout) < Time.now do
         sleep 1
       end
-      yield if block_given?
+     
+      return unless block_given?
+
+      # Now try to get the list of data few times until we either fail or timeout (2 seconds)
+      20.times.each do |index|
+        begin
+          return true if yield
+        rescue Exception => e
+          sleep 0.5
+        end
+      end
+      false
     end
 
     # Since Kernel#select is defined, we have to override it specifically here.
