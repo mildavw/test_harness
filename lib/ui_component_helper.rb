@@ -40,6 +40,14 @@ class TestHarness
       end
     end
 
+    def wait_for_ajax
+      start_time = Time.now
+      until page.evaluate_script('jQuery.isReady&&jQuery.active==0') or (start_time + ajax_timeout) < Time.now do
+        sleep 1
+      end
+      yield if block_given?
+    end
+
     # Since Kernel#select is defined, we have to override it specifically here.
     def select(*args, &block)
       browser.within(component.within) do
@@ -108,6 +116,10 @@ class TestHarness
 
     def server_host
       configuration.server_host || Capybara.default_host || 'http://example.com'
+    end
+
+    def ajax_timeout
+      (configuration.ajax_timeout || 5).to_i.seconds
     end
   end
 end
