@@ -32,7 +32,11 @@ class TestHarness
     # component.
     def method_missing(name, *args, &block)
       if respond_to?(name)
-        browser.within(component.within) do
+        if component.within
+          browser.within(component.within) do
+            browser.send(name, *args, &block)
+          end
+        else
           browser.send(name, *args, &block)
         end
       else
@@ -61,7 +65,11 @@ class TestHarness
 
     # Since Kernel#select is defined, we have to override it specifically here.
     def select(*args, &block)
-      browser.within(component.within) do
+      if component.within 
+        browser.within(component.within) do
+          browser.select(*args, &block)
+        end
+      else
         browser.select(*args, &block)
       end
     end
