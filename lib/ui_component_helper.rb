@@ -50,7 +50,7 @@ class TestHarness
       until page.evaluate_script('jQuery.isReady&&jQuery.active==0') or (start_time + ajax_timeout) < Time.now do
         sleep 1
       end
-     
+
       return unless block_given?
 
       # Now try to get the list of data few times until we either fail or timeout (2 seconds)
@@ -66,7 +66,7 @@ class TestHarness
 
     # Since Kernel#select is defined, we have to override it specifically here.
     def select(*args, &block)
-      if component.within 
+      if component.within
         browser.within(component.within) do
           browser.select(*args, &block)
         end
@@ -120,10 +120,12 @@ class TestHarness
 
     private
     def component_path
-      case path = component.path
-      when Proc then path.call(mm)
-      else
-        path.gsub(/:\w+/) {|match| mm.subject.send(match.tr(':',''))}
+      component.path.gsub(/:\w+/) do |match|
+        if mm.subject.is_a? Hash
+          mm.subject[match.tr(':','')]
+        else
+          mm.subject.send(match.tr(':',''))
+        end
       end
     end
 
