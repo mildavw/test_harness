@@ -58,7 +58,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = "1.8.23"
   s.summary = "Mini test harness for rspec and cucumber"
 
-  s.add_development_dependency('debugger')
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
