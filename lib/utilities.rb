@@ -25,7 +25,7 @@ class TestHarness
 
     def register_components(component_type)
       Dir.glob(File.join(TestHarness.autoload_path, "#{component_type}/**/**.rb")).each do |file|
-        component = file.sub(TestHarness.autoload_path, '').sub(/^\/?#{component_type}\//, '').sub(/\.rb$/, '')
+        component = file.sub(TestHarness.autoload_path.to_s, '').sub(/^\/?#{component_type}\//, '').sub(/\.rb$/, '')
         require file
         yield component if block_given?
       end
