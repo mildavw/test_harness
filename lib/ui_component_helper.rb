@@ -131,8 +131,8 @@ class TestHarness
             mm.subject.send(token)
           elsif mm.respond_to? token.to_sym
             mm.send(token)
-          elsif mm.respond_to? token.tr('_id', '')
-            mm.send(token.tr('_id', '')).id
+          elsif mm.respond_to? token.sub('_id', '')
+            mm.send(token.sub('_id', '')).id
           end
         end
       end
