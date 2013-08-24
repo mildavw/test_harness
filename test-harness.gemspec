@@ -5,11 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "test-harness"
-<<<<<<< HEAD
-  s.version = "0.4.13"
-=======
   s.version = "0.5.0"
->>>>>>> Add flexibility to component_path replacement for constructing the url
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Maher Hawash"]
