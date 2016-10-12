@@ -21,9 +21,9 @@ class TestHarness
 
     def browser
       @browser ||= begin
-        raise MissingConfiguration.new('TestHarness.browser must be defined') if configuration.browser.nil?
-        configuration.browser
-       end
+                     raise MissingConfiguration.new('TestHarness.browser must be defined') if configuration.browser.nil?
+                     configuration.browser
+                   end
     end
 
     # If the UIComponent is sent a message it does not understand, it will
@@ -51,7 +51,7 @@ class TestHarness
     # We don't want to go through the method_missing above for visit, but go
     # directly to the browser object
     def visit(path)
-      path = "%s:%s%s" % [server_host, Capybara.server_port, path] if path !~ /^http/
+      path = "%s:%s%s" % [server_host, server_port, path] if path !~ /^http/
 
       browser.visit(path)
     end
@@ -123,8 +123,12 @@ class TestHarness
       browser.respond_to?(name)
     end
 
+    def server_port
+      Capybara.server_port || Capybara.current_session.server.port
+    end
+
     def server_host
-      configuration.server_host || Capybara.default_host || 'http://example.com'
+      configuration.server_host || 'http://%s' % Capybara.current_session.server.host || Capybara.default_host || 'http://example.com'
     end
   end
 end
