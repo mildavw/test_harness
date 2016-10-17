@@ -124,11 +124,13 @@ class TestHarness
     end
 
     def server_port
-      Capybara.server_port || Capybara.current_session.server.port
+      Capybara.server_port || Capybara.current_session.server.try(:port)
     end
 
     def server_host
-      configuration.server_host || 'http://%s' % Capybara.current_session.server.host || Capybara.default_host || 'http://example.com'
+      host_current_session = Capybara.current_session.server.try(:host)
+      configuration.server_host || host_current_session && 'http://%s' % host_current_session ||
+        Capybara.default_host || 'http://example.com'
     end
   end
 end
