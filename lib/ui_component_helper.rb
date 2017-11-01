@@ -91,12 +91,19 @@ class TestHarness
       @form ||= OpenStruct.new
     end
 
+    def find_and_scroll_to(selector, opts={})
+      if element = find(selector, opts)
+        script = "arguments[0].scrollIntoView(true);"
+        Capybara.current_session.driver.browser.execute_script(script, element.native)
+      end
+      element
+    end
+
     private
     def form_hash
       form.instance_variable_get("@table")
     end
 
-    private
     def component_path
       case path = component.path
       when Proc then path.call(mm)
